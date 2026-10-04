@@ -1,0 +1,10 @@
+{
+  "description": "This finance dashboard application provides users with real-time financial data visualization and analysis tools, empowering individuals and businesses to make informed financial decisions.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
