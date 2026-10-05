@@ -66,7 +66,7 @@ const transactions: Row[] = [
 ];
 
 const customers: Row[] = [
-  { "Customer ID": "CUS-2048", "Customer Name": "Jean Romeo", Phone: "+250 788 210 449", Email: "jean@email.rw", Address: "Nyarugunga · Kamashashi", Type: "Household", "Service Plan": "Weekly", "Billing Cycle": "Monthly", "Monthly Amount": "RWF 18,000", "Current Balance": "RWF 0", "Payment Status": "Paid", "Last Payment": "Oct 03, 2026", "Next Due Date": "Nov 01, 2026" },
+  { "Customer ID": "CUS-2048", "Customer Name": "Jean Romeo", Phone: "+250 788 123 456", Email: "jean.romeo@example.com", Address: "KG 218, Nyarugunga, Kicukiro, Kigali", Type: "Household · Level 2", "Service Plan": "Every Monday · 08:00–11:00", "Billing Cycle": "Monthly", "Monthly Amount": "RWF 18,000", "Current Balance": "RWF 0", "Payment Status": "Paid", "Last Payment": "Oct 03, 2026", "Next Due Date": "Nov 01, 2026" },
   { "Customer ID": "CUS-2049", "Customer Name": "Aline Uwase", Phone: "+250 783 415 228", Email: "aline@email.rw", Address: "Remera · Rukiri I", Type: "Household", "Service Plan": "Twice weekly", "Billing Cycle": "Monthly", "Monthly Amount": "RWF 24,000", "Current Balance": "RWF 24,000", "Payment Status": "Pending", "Last Payment": "Sep 02, 2026", "Next Due Date": "Oct 01, 2026" },
   { "Customer ID": "CUS-2050", "Customer Name": "Patrick Habimana", Phone: "+250 720 335 901", Email: "patrick@email.rw", Address: "Niboye · Gatare", Type: "Household", "Service Plan": "Weekly", "Billing Cycle": "Monthly", "Monthly Amount": "RWF 18,000", "Current Balance": "RWF 36,000", "Payment Status": "Overdue", "Last Payment": "Aug 27, 2026", "Next Due Date": "Sep 01, 2026" },
   { "Customer ID": "CUS-2051", "Customer Name": "Kigali Fresh Market", Phone: "+250 788 900 125", Email: "accounts@kfm.rw", Address: "Kimironko", Type: "Business", "Service Plan": "Daily commercial", "Billing Cycle": "Monthly", "Monthly Amount": "RWF 85,000", "Current Balance": "RWF 85,000", "Payment Status": "Due", "Last Payment": "Sep 01, 2026", "Next Due Date": "Oct 05, 2026" },
@@ -75,7 +75,7 @@ const customers: Row[] = [
 const invoices: Row[] = [
   { "Invoice Number": "INV-2026-1051", Customer: "Aline Uwase", Phone: "+250 783 415 228", "Billing Period": "October 2026", Service: "Twice-weekly collection", Amount: "RWF 20,690", Tax: "RWF 3,310", Total: "RWF 24,000", "Issue Date": "Oct 01, 2026", "Due Date": "Oct 08, 2026", Status: "Sent" },
   { "Invoice Number": "INV-2026-1050", Customer: "Patrick Habimana", Phone: "+250 720 335 901", "Billing Period": "October 2026", Service: "Weekly household collection", Amount: "RWF 15,517", Tax: "RWF 2,483", Total: "RWF 18,000", "Issue Date": "Oct 01, 2026", "Due Date": "Oct 08, 2026", Status: "Partially Paid" },
-  { "Invoice Number": "INV-2026-1049", Customer: "Jean Romeo", Phone: "+250 788 210 449", "Billing Period": "October 2026", Service: "Weekly household collection", Amount: "RWF 15,517", Tax: "RWF 2,483", Total: "RWF 18,000", "Issue Date": "Oct 01, 2026", "Due Date": "Oct 08, 2026", Status: "Paid" },
+  { "Invoice Number": "INV-2026-1049", Customer: "Jean Romeo", Phone: "+250 788 123 456", "Billing Period": "October 2026", Service: "Household Level 2 · Every Monday", Amount: "RWF 15,517", Tax: "RWF 2,483", Total: "RWF 18,000", "Issue Date": "Oct 01, 2026", "Due Date": "Oct 08, 2026", Status: "Paid" },
   { "Invoice Number": "INV-2026-1048", Customer: "Kigali Fresh Market", Phone: "+250 788 900 125", "Billing Period": "October 2026", Service: "Daily commercial collection", Amount: "RWF 73,276", Tax: "RWF 11,724", Total: "RWF 85,000", "Issue Date": "Oct 01, 2026", "Due Date": "Oct 05, 2026", Status: "Overdue" },
   { "Invoice Number": "INV-2026-1052", Customer: "Mutesi Alice", Phone: "+250 788 700 114", "Billing Period": "November 2026", Service: "Weekly household collection", Amount: "RWF 15,517", Tax: "RWF 2,483", Total: "RWF 18,000", "Issue Date": "Oct 03, 2026", "Due Date": "Nov 08, 2026", Status: "Draft" },
 ];
@@ -88,7 +88,7 @@ const outstanding: Row[] = [
 ];
 
 const mobileMoney: Row[] = [
-  { "Transaction ID": "MM-702841", Provider: "MTN Mobile Money", Customer: "Jean Romeo", Phone: "+250 788 210 449", Amount: "RWF 18,000", Reference: "MP26092810482", "Request Date": "Oct 03 · 09:41", "Completion Date": "Oct 03 · 09:42", Status: "Successful" },
+  { "Transaction ID": "MM-702841", Provider: "MTN Mobile Money", Customer: "Jean Romeo", Phone: "+250 788 123 456", Amount: "RWF 18,000", Reference: "MP26092810482", "Request Date": "Oct 03 · 09:41", "Completion Date": "Oct 03 · 09:42", Status: "Successful" },
   { "Transaction ID": "MM-702840", Provider: "Airtel Money", Customer: "Aline Uwase", Phone: "+250 783 415 228", Amount: "RWF 24,000", Reference: "AM26092810481", "Request Date": "Oct 03 · 09:18", "Completion Date": "Awaiting provider", Status: "Pending" },
   { "Transaction ID": "MM-702839", Provider: "MTN Mobile Money", Customer: "Kigali Fresh Market", Phone: "+250 788 900 125", Amount: "RWF 85,000", Reference: "MP26092810479", "Request Date": "Oct 02 · 16:19", "Completion Date": "Oct 02 · 16:20", Status: "Failed" },
   { "Transaction ID": "MM-702838", Provider: "Airtel Money", Customer: "Mutesi Alice", Phone: "+250 733 700 114", Amount: "RWF 18,000", Reference: "Awaiting request", "Request Date": "Oct 02 · 14:10", "Completion Date": "—", Status: "Initiated" },
@@ -110,7 +110,7 @@ const reconciliation: Row[] = [
 const receipts: Row[] = transactions.filter((item) => item.Status === "Successful").map((item, index) => ({
   "Receipt Number": `RCT-2026-${8042 - index}`,
   Customer: item.Customer,
-  Phone: index ? "+250 788 700 114" : "+250 788 210 449",
+  Phone: index ? "+250 788 700 114" : "+250 788 123 456",
   Invoice: item.Invoice,
   Reference: item.Reference,
   Method: item["Payment Method"],
@@ -342,7 +342,7 @@ function SettingsPage({ onNotify }: { onNotify: (message: string) => void }) {
 }
 
 const collectionLocations = [
-  { zone: "Gasabo North", address: "KG 218, Nyarugunga", schedule: "Mondays · 08:00–11:00", vehicle: "RW 412 A", customers: "184", paid: "152", unpaid: "32", collected: "RWF 2.74M", outstanding: "RWF 576K", coordinates: "-1.9355,30.1397" },
+  { zone: "Kicukiro-Nyarugunga Route", address: "KG 218, Nyarugunga", schedule: "Mondays · 08:00–11:00", vehicle: "RW 412 A", customers: "184", paid: "152", unpaid: "32", collected: "RWF 2.74M", outstanding: "RWF 576K", coordinates: "-1.9355,30.1397" },
   { zone: "Kicukiro Central", address: "KK 15, Niboye", schedule: "Tuesdays · 07:30–10:30", vehicle: "RW 307 K", customers: "146", paid: "121", unpaid: "25", collected: "RWF 2.18M", outstanding: "RWF 450K", coordinates: "-1.9922,30.1044" },
   { zone: "Kimironko Market", address: "KG 11 Avenue, Kimironko", schedule: "Daily · 17:00–19:00", vehicle: "RW 118 T", customers: "68", paid: "59", unpaid: "9", collected: "RWF 5.01M", outstanding: "RWF 765K", coordinates: "-1.9498,30.1278" },
   { zone: "Nyarugenge West", address: "KN 7 Road, Nyamirambo", schedule: "Thursdays · 08:00–12:00", vehicle: "RW 922 D", customers: "172", paid: "139", unpaid: "33", collected: "RWF 2.50M", outstanding: "RWF 594K", coordinates: "-1.9807,30.0444" },

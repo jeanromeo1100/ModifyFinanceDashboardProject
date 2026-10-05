@@ -5,6 +5,7 @@ import {
   Building2,
   CalendarDays,
   Check,
+  ChevronLeft,
   ChevronRight,
   CircleAlert,
   ClipboardCheck,
@@ -114,7 +115,7 @@ const roleConfig: Record<
       { label: "Reports", icon: FileText },
       { label: "Activity Log", icon: LockKeyhole },
       { label: "AI Assistant", icon: Sparkles },
-      { label: "Settings", icon: Settings },
+      { label: "Profile & Settings", icon: Settings },
     ],
   },
   Finance: {
@@ -133,6 +134,7 @@ const roleConfig: Record<
       { label: "Financial Reports", icon: Activity },
       { label: "Communication", icon: MessageSquareText },
       { label: "Activity Log", icon: LockKeyhole },
+      { label: "Profile & Settings", icon: UserRound },
     ],
   },
   Employee: {
@@ -152,7 +154,7 @@ const roleConfig: Record<
       { label: "Trip Management", icon: Navigation },
       { label: "Nduba Landfill", icon: Truck },
       { label: "Notifications", icon: Bell },
-      { label: "Profile", icon: UserRound },
+      { label: "Profile & Settings", icon: UserRound },
     ],
   },
   Customer: {
@@ -165,14 +167,13 @@ const roleConfig: Record<
     status: "Service active",
     nav: [
       { label: "Dashboard", icon: LayoutDashboard },
-      { label: "Profile", icon: UserRound },
+      { label: "Profile & Settings", icon: UserRound },
       { label: "My Collection", icon: PackageCheck },
       { label: "My Schedule / History", icon: Clock3 },
       { label: "My Payments / Invoices", icon: ReceiptText },
       { label: "Notifications", icon: Bell },
       { label: "Request Service", icon: PackageCheck },
       { label: "AI Assistant", icon: Sparkles },
-      { label: "Settings", icon: Settings },
     ],
   },
 };
@@ -211,12 +212,12 @@ const roleMetrics = {
     { label: "Exceptions", value: "1", note: "Needs review", icon: CircleAlert },
   ],
   Customer: [
-    { label: "Next collection", value: "Oct 04", note: "Friday · 08:00–11:00", icon: CalendarDays },
-    { label: "Collection status", value: "Scheduled", note: "Route KG 45", icon: Route },
+    { label: "Next collection", value: "Oct 05", note: "Monday · 08:00–11:00", icon: CalendarDays },
+    { label: "Collection status", value: "Scheduled", note: "Kicukiro-Nyarugunga Route", icon: Route },
     { label: "Outstanding balance", value: "RWF 0", note: "No balance due", icon: ReceiptText },
     { label: "Service plan", value: "Weekly", note: "240 kg allowance", icon: PackageCheck },
     { label: "Collection point", value: "CP-2048", note: "Nyarugunga, Kicukiro", icon: MapPin },
-    { label: "Last collection", value: "Sep 27", note: "Completed successfully", icon: Check },
+    { label: "Last collection", value: "Sep 28", note: "Completed successfully", icon: Check },
     { label: "Notifications", value: "2", note: "One unread update", icon: Bell },
     { label: "Payment status", value: "Paid", note: "Receipt ECO-0921", icon: ShieldCheck },
   ],
@@ -230,7 +231,7 @@ const records = {
     ["EcoServe Rwanda", "Waste operator", "Active", "Sep 29, 2026"],
   ],
   Manager: [
-    ["KG 218 · Gasabo North", "Truck RW 412 A", "In progress", "14 / 18 stops"],
+    ["KG 218 · Kicukiro-Nyarugunga Route", "Truck RW 412 A", "In progress", "14 / 18 stops"],
     ["KK 15 · Kicukiro Central", "Truck RW 307 K", "In progress", "11 / 15 stops"],
     ["KN 7 · Nyarugenge", "Truck RW 922 D", "Completed", "21 / 21 stops"],
     ["KG 45 · Kimironko", "Truck RW 118 T", "Delayed", "6 / 16 stops"],
@@ -248,10 +249,10 @@ const records = {
     ["Kibagabaga Sector Office", "Collection", "Next stop", "10:55"],
   ],
   Customer: [
-    ["Weekly household pickup", "Collection", "Scheduled", "Oct 04, 08:00"],
-    ["September service invoice", "Payment", "Completed", "Sep 26, 14:12"],
-    ["Collection point confirmed", "Location", "Active", "Sep 18, 09:31"],
-    ["Welcome to EcoRoute", "Message", "Completed", "Sep 15, 11:05"],
+    ["Monday household pickup", "Collection", "Scheduled", "Oct 05, 08:00"],
+    ["Collection completed", "Collection", "Completed", "Sep 28, 08:42"],
+    ["Collection completed", "Collection", "Completed", "Sep 21, 09:06"],
+    ["Vehicle breakdown", "Collection", "Rescheduled", "Sep 15, 08:00"],
   ],
 };
 
@@ -351,7 +352,7 @@ function Sidebar({
             );
           })}
         </nav>
-        <div className="mt-auto rounded-2xl border border-emerald-900/10 bg-white p-3.5">
+        <button className="mt-auto w-full rounded-2xl border border-emerald-900/10 bg-white p-3.5 text-left hover:border-emerald-300" onClick={() => { onPage(role === "Admin" ? "System Configuration" : "Profile & Settings"); onClose(); }}>
           <div className="flex items-center gap-3">
             <div className="grid size-9 place-items-center rounded-xl bg-emerald-100 text-xs font-bold text-emerald-800">
               {initials || config.initials}
@@ -362,7 +363,7 @@ function Sidebar({
             </div>
             <MoreHorizontal className="ml-auto text-slate-400" size={18} />
           </div>
-        </div>
+        </button>
       </aside>
     </>
   );
@@ -551,9 +552,9 @@ function Dashboard({ role, onPage, profile }: { role: Role; onPage: (page: strin
     role === "Manager"
       ? ["Collections", "AI EcoRoute", "Live Operations", "Reports"]
       : role === "Customer"
-        ? ["Payment", "Collection schedule", "Route", "Request service", "AI Assistant"]
-        : role === "Employee"
-          ? ["My Route", "My Tasks", "Collection Status", "Nduba Trip"]
+        ? ["My Payments / Invoices", "My Schedule / History", "My Collection", "Request Service", "AI Assistant"]
+      : role === "Employee"
+          ? ["My Routes", "My Tasks", "Collection Status", "Nduba Landfill"]
           : ["Companies", "Users", "Audit logs", "Reports"];
   return (
     <>
@@ -733,7 +734,7 @@ function AIWorkflow() {
         <label className="text-xs font-semibold text-slate-600">
           Operational zone
           <select className="mt-1.5 w-full rounded-xl border border-emerald-100 bg-white px-3 py-2.5 text-sm outline-none">
-            <option>Gasabo North</option><option>Kicukiro Central</option><option>Nyarugenge</option>
+            <option>Kicukiro-Nyarugunga Route</option><option>Kicukiro Central</option><option>Nyarugenge</option>
           </select>
         </label>
         <label className="text-xs font-semibold text-slate-600">
@@ -872,50 +873,18 @@ function CustomerPayment() {
 type CustomerMessage = { id: string; date: string; message: string; type: string; status: string; sender: string; unread: boolean; relatedPage: string };
 
 function CustomerSmsPage({ onPage }: { onPage: (page: string) => void }) {
-  const shared = (JSON.parse(localStorage.getItem("ecoroute-shared-messages") ?? "[]") as Array<Record<string, string | boolean>>).filter((item) => {
-    const location = String(item.location ?? "");
-    return location.includes("Nyarugunga") || location.includes("Direct customer");
-  });
-  const seeded: CustomerMessage[] = [
-    { id: "SMS-1048", date: "Oct 04", message: "Your waste collection is scheduled tomorrow at 08:00.", type: "Collection", status: "Sent", sender: "EcoRoute Operations", unread: true, relatedPage: "Collection schedule" },
-    { id: "SMS-1047", date: "Sep 30", message: "Your payment of RWF 15,000 was successful.", type: "Payment", status: "Sent", sender: "EcoRoute Billing", unread: false, relatedPage: "Payment History" },
-    { id: "SMS-1046", date: "Sep 29", message: "Your waste collection has been completed.", type: "Collection", status: "Sent", sender: "Employee · Team Alpha", unread: false, relatedPage: "My Collection" },
-    { id: "SMS-1045", date: "Sep 27", message: "Your waste collection bill of RWF 15,000 is due on 10 October.", type: "Payment reminder", status: "Sent", sender: "Manager · Diane Mukamana", unread: true, relatedPage: "Payment" },
-    { id: "SMS-1044", date: "Sep 25", message: "Your service request #SR-1024 has been received.", type: "Service request", status: "Sent", sender: "EcoRoute Support", unread: false, relatedPage: "Request service" },
-    { id: "SMS-1043", date: "Sep 22", message: "Your collection has been delayed. Updated time: 10:30.", type: "Route delay", status: "Sent", sender: "Employee · Eric Niyonzima", unread: false, relatedPage: "Route" },
+  const seeded = [
+    { id:"APP-1048", channel:"App", date:"Oct 05", message:"Your collection is scheduled Monday at 08:00.", type:"Collection", sender:"EcoRoute Operations", unread:true, relatedPage:"My Schedule / History" },
+    { id:"SMS-1047", channel:"SMS", date:"Sep 30", message:"Your payment of RWF 15,000 was successful.", type:"Payment", sender:"EcoRoute Billing", unread:false, relatedPage:"My Payments / Invoices" },
+    { id:"APP-1046", channel:"App", date:"Sep 29", message:"Your collection at CP-2048 was completed.", type:"Collection", sender:"Team Alpha", unread:false, relatedPage:"My Collection" },
+    { id:"SMS-1045", channel:"SMS", date:"Sep 27", message:"Your waste collection bill is due on 10 October.", type:"Payment reminder", sender:"EcoRoute Billing", unread:true, relatedPage:"My Payments / Invoices" },
   ];
-  const imported: CustomerMessage[] = shared.map((item, index) => ({
-    id: String(item.id ?? `SHARED-${index}`),
-    date: String(item.date ?? "Today"),
-    message: String(item.message ?? ""),
-    type: String(item.type ?? "Collection"),
-    status: String(item.status ?? "Sent"),
-    sender: String(item.sender ?? "EcoRoute Manager"),
-    unread: Boolean(item.unread),
-    relatedPage: "Collection schedule",
-  }));
-  const [messages, setMessages] = useState<CustomerMessage[]>([...imported, ...seeded]);
-  const [selected, setSelected] = useState<CustomerMessage | null>(messages[0] ?? null);
-  const markRead = (id: string) => {
-    setMessages(messages.map((item) => item.id === id ? { ...item, unread: false } : item));
-    if (selected?.id === id) setSelected({ ...selected, unread: false });
-  };
-  const archive = (id: string) => {
-    const remaining = messages.filter((item) => item.id !== id);
-    setMessages(remaining);
-    if (selected?.id === id) setSelected(remaining[0] ?? null);
-  };
-  return (
-    <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="flex items-center border-b border-slate-100 p-5"><div><p className="font-bold">SMS & direct messages</p><p className="mt-1 text-xs text-slate-500">Messages sent by EcoRoute, your Manager, or assigned collection employees.</p></div><span className="ml-auto rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">{messages.filter((item) => item.unread).length} unread</span></div>
-        <div className="overflow-x-auto"><table className="w-full min-w-[650px] text-left"><thead className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-400"><tr><th className="px-5 py-3">Date</th><th className="px-5 py-3">Message</th><th className="px-5 py-3">Type</th><th className="px-5 py-3">Status</th></tr></thead><tbody className="divide-y divide-slate-100">{messages.map((item) => <tr className={`cursor-pointer text-sm hover:bg-emerald-50/40 ${item.unread ? "bg-emerald-50/20" : ""}`} key={item.id} onClick={() => { setSelected(item); markRead(item.id); }}><td className="whitespace-nowrap px-5 py-4">{item.date}</td><td className="max-w-sm px-5 py-4"><div className="flex items-center gap-2"><span className={`truncate ${item.unread ? "font-bold text-slate-950" : "text-slate-600"}`}>{item.message}</span>{item.unread && <span className="size-2 shrink-0 rounded-full bg-emerald-600" />}</div><p className="mt-1 text-xs text-slate-400">{item.sender}</p></td><td className="px-5 py-4"><span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800">{item.type}</span></td><td className="px-5 py-4 font-semibold text-slate-500">{item.status}</td></tr>)}</tbody></table></div>
-      </div>
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        {selected ? <><div className="flex items-start"><div className="grid size-11 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><MessageSquareText size={19} /></div><div className="ml-3"><p className="text-xs font-bold uppercase tracking-wider text-emerald-700">{selected.type}</p><p className="mt-1 text-sm text-slate-400">{selected.date} · {selected.status}</p></div></div><p className="mt-6 text-lg font-semibold leading-8 text-slate-900">{selected.message}</p><div className="mt-5 rounded-xl bg-slate-50 p-4"><p className="text-xs text-slate-400">Sent by</p><p className="mt-1 text-sm font-bold">{selected.sender}</p></div><div className="mt-6 grid gap-2 sm:grid-cols-3"><button className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-bold" onClick={() => markRead(selected.id)}>Mark as read</button><button className="rounded-xl bg-emerald-700 px-3 py-2.5 text-xs font-bold text-white" onClick={() => onPage(selected.relatedPage)}>Open related page</button><button className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-bold text-slate-500" onClick={() => archive(selected.id)}>Archive</button></div></> : <div className="grid min-h-64 place-items-center text-sm text-slate-400">Select a message to read it.</div>}
-      </div>
-    </div>
-  );
+  const [filter,setFilter]=useState("All");
+  const [messages,setMessages]=useState(seeded);
+  const [selected,setSelected]=useState(seeded[0]);
+  const visible=messages.filter(item=>filter==="All"||item.channel===filter);
+  const open=(item:typeof seeded[number])=>{setSelected({...item,unread:false});setMessages(messages.map(message=>message.id===item.id?{...message,unread:false}:message));};
+  return <div className="space-y-4"><div className="flex gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">{["All","App","SMS"].map(item=><button className={`rounded-xl px-4 py-2.5 text-sm font-bold ${filter===item?"bg-emerald-700 text-white":"text-slate-500"}`} key={item} onClick={()=>setFilter(item)}>{item}</button>)}</div><div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]"><div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="flex items-center border-b border-slate-100 p-5"><div><p className="font-bold">Notifications</p><p className="mt-1 text-xs text-slate-500">App and SMS updates for Jean Romeo only.</p></div><span className="ml-auto rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">{messages.filter(item=>item.unread).length} unread</span></div><div className="divide-y divide-slate-100">{visible.map(item=><button className={`w-full p-4 text-left hover:bg-emerald-50/40 ${item.unread?"bg-emerald-50/20":""}`} key={item.id} onClick={()=>open(item)}><div className="flex items-center"><span className="text-xs font-bold text-emerald-700">{item.channel}</span><span className="ml-auto text-xs text-slate-400">{item.date}</span></div><p className={`mt-2 text-sm ${item.unread?"font-bold":"text-slate-600"}`}>{item.message}</p><p className="mt-1 text-xs text-slate-400">{item.sender}</p></button>)}</div></div><div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div className="grid size-11 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><Bell size={19}/></div><p className="mt-5 text-xs font-bold uppercase tracking-wider text-emerald-700">{selected.type} · {selected.channel}</p><p className="mt-3 text-lg font-semibold leading-8">{selected.message}</p><p className="mt-4 text-sm text-slate-500">Sent by {selected.sender}</p><div className="mt-6 flex gap-2"><button className="rounded-xl bg-emerald-700 px-4 py-2.5 text-xs font-bold text-white" onClick={()=>onPage(selected.relatedPage)}>Open related page</button><button className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold" onClick={()=>{const remaining=messages.filter(item=>item.id!==selected.id);setMessages(remaining);setSelected(remaining[0]??seeded[0])}}>Archive</button></div></div></div></div>;
 }
 
 function CustomerPaymentHistoryPage() {
@@ -943,56 +912,20 @@ function CustomerPaymentHistoryPage() {
 }
 
 function CustomerBillingPage({ onPage }: { onPage: (page: string) => void }) {
-  const [selectedInvoice, setSelectedInvoice] = useState<string[] | null>(null);
-  const invoices = [
-    ["INV-00125", "Sep 2026", "RWF 15,000", "10 Oct", "Outstanding"],
-    ["INV-00118", "Aug 2026", "RWF 15,000", "10 Sep", "Paid"],
-    ["INV-00110", "Jul 2026", "RWF 15,000", "10 Aug", "Paid"],
-  ];
-  const downloadInvoice = (invoice: string[]) => {
-    const file = [
-      "ECOROUTE WASTE COLLECTION INVOICE",
-      `Invoice: ${invoice[0]}`,
-      `Customer: Jean Romeo`,
-      `Service period: ${invoice[1]}`,
-      `Collection point: CP-2048 · Nyarugunga`,
-      `Amount: ${invoice[2]}`,
-      `Due date: ${invoice[3]}`,
-      `Status: ${invoice[4]}`,
-    ].join("\n");
-    const url = URL.createObjectURL(new Blob([file], { type: "text/plain" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${invoice[0]}-EcoRoute-Invoice.txt`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-  return (
-    <div className="space-y-4">
-      <div className="rounded-2xl bg-emerald-900 p-5 text-white">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-          <div><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Current invoice</p><p className="mt-2 text-2xl font-bold">INV-00125</p><p className="mt-1 text-sm text-emerald-100">September 2026 waste collection service</p></div>
-          <span className="self-start rounded-full bg-white px-3 py-1.5 text-xs font-bold text-emerald-900 sm:ml-auto">Outstanding</span>
-        </div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-4">
-          {[["Invoice", "INV-00125"], ["Period", "September 2026"], ["Amount", "RWF 15,000"], ["Due date", "10 October 2026"]].map(([label, value]) => <div key={label}><p className="text-xs text-emerald-200">{label}</p><p className="mt-1 font-bold">{value}</p></div>)}
-        </div>
-        <div className="mt-6 flex flex-wrap gap-2"><button className="rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-emerald-900" onClick={() => setSelectedInvoice(invoices[0])}>View Invoice</button><button className="rounded-xl bg-emerald-500 px-4 py-2.5 text-xs font-bold text-emerald-950" onClick={() => onPage("Payment")}>Pay RWF 15,000</button><button className="flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold" onClick={() => downloadInvoice(invoices[0])}><Download size={14} />Download</button><button className="rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold" onClick={() => window.print()}>Print</button></div>
-      </div>
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-100 p-5"><p className="font-bold">Previous invoices</p><p className="mt-1 text-xs text-slate-500">Review, pay, download or print your waste-service invoices.</p></div>
-        <div className="overflow-x-auto"><table className="w-full min-w-[780px] text-left"><thead className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-400"><tr><th className="px-5 py-3">Invoice</th><th className="px-5 py-3">Period</th><th className="px-5 py-3">Amount</th><th className="px-5 py-3">Due Date</th><th className="px-5 py-3">Status</th><th className="px-5 py-3">Actions</th></tr></thead><tbody className="divide-y divide-slate-100">{invoices.map((invoice) => <tr className="text-sm" key={invoice[0]}><td className="px-5 py-4 font-bold">{invoice[0]}</td><td className="px-5 py-4 text-slate-600">{invoice[1]}</td><td className="px-5 py-4 font-bold">{invoice[2]}</td><td className="px-5 py-4 text-slate-600">{invoice[3]}</td><td className="px-5 py-4"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${invoice[4] === "Paid" ? "bg-emerald-50 text-emerald-800" : "bg-slate-950 text-white"}`}>{invoice[4]}</span></td><td className="px-5 py-4"><div className="flex items-center gap-2"><button className="text-xs font-bold text-emerald-700" onClick={() => setSelectedInvoice(invoice)}>View</button>{invoice[4] === "Outstanding" && <button className="text-xs font-bold text-emerald-700" onClick={() => onPage("Payment")}>Pay</button>}<button aria-label={`Download ${invoice[0]}`} className="text-slate-400 hover:text-emerald-700" onClick={() => downloadInvoice(invoice)}><Download size={15} /></button><button className="text-xs font-bold text-slate-500" onClick={() => window.print()}>Print</button></div></td></tr>)}</tbody></table></div>
-      </div>
-      <CustomerPaymentHistoryPage />
-      {selectedInvoice && <Overlay onClose={() => setSelectedInvoice(null)}><div className="flex items-start border-b border-slate-100 pb-5"><Brand /><span className={`ml-auto rounded-full px-3 py-1 text-xs font-bold ${selectedInvoice[4] === "Paid" ? "bg-emerald-100 text-emerald-800" : "bg-slate-950 text-white"}`}>{selectedInvoice[4]}</span></div><p className="mt-6 text-xs font-bold uppercase tracking-wider text-emerald-700">Waste collection invoice</p><h2 className="mt-2 text-3xl font-bold">{selectedInvoice[0]}</h2><div className="mt-6 grid gap-3 sm:grid-cols-2">{[["Customer", "Jean Romeo"], ["Customer ID", "CUS-2048"], ["Service period", selectedInvoice[1]], ["Collection point", "CP-2048 · Nyarugunga"], ["Amount", selectedInvoice[2]], ["Due date", selectedInvoice[3]]].map(([label, value]) => <div className="rounded-xl bg-slate-50 p-4" key={label}><p className="text-xs text-slate-400">{label}</p><p className="mt-1 text-sm font-bold">{value}</p></div>)}</div><div className="mt-6 flex flex-wrap gap-2">{selectedInvoice[4] === "Outstanding" && <button className="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white" onClick={() => onPage("Payment")}>Pay Now</button>}<button className="flex items-center gap-2 rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold" onClick={() => downloadInvoice(selectedInvoice)}><Download size={15} />Download</button><button className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold" onClick={() => window.print()}>Print</button></div></Overlay>}
-    </div>
-  );
+  const [tab,setTab]=useState("Overview");
+  const invoices=[["INV-00125","September 2026","RWF 15,000","10 October 2026","Outstanding"],["INV-00118","August 2026","RWF 15,000","10 September 2026","Paid"],["INV-00110","July 2026","RWF 15,000","10 August 2026","Paid"]];
+  const download=(invoice:string[])=>{const text=["ECOROUTE WASTE COLLECTION INVOICE",`Invoice: ${invoice[0]}`,"Customer: Jean Romeo","Customer ID: CUS-2048",`Period: ${invoice[1]}`,`Amount: ${invoice[2]}`,`Due: ${invoice[3]}`,`Status: ${invoice[4]}`].join("\n");const url=URL.createObjectURL(new Blob([text],{type:"text/plain"}));const link=document.createElement("a");link.href=url;link.download=`${invoice[0]}-invoice.txt`;link.click();URL.revokeObjectURL(url)};
+  return <div className="space-y-4"><div className="flex gap-2 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">{["Overview","Payments","Invoices"].map(item=><button className={`rounded-xl px-4 py-2.5 text-sm font-bold ${tab===item?"bg-emerald-700 text-white":"text-slate-500"}`} key={item} onClick={()=>setTab(item)}>{item}</button>)}</div>
+    {tab==="Overview"&&<><div className="rounded-2xl bg-emerald-900 p-5 text-white"><div className="flex"><div><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Billing overview</p><p className="mt-2 text-2xl font-bold">Jean Romeo · CUS-2048</p><p className="mt-1 text-sm text-emerald-100">Household Level 2 · Collection point CP-2048</p></div><span className="ml-auto self-start rounded-full bg-white px-3 py-1 text-xs font-bold text-emerald-900">Paid</span></div><div className="mt-6 grid gap-4 sm:grid-cols-4">{[["Total paid","RWF 45,000"],["Outstanding","RWF 15,000"],["Last payment","30 Sep 2026"],["Current status","Invoice due"]].map(([label,value])=><div key={label}><p className="text-xs text-emerald-200">{label}</p><p className="mt-1 font-bold">{value}</p></div>)}</div></div><div className="grid gap-4 sm:grid-cols-3">{[["Next invoice due","10 October 2026"],["Payment method","MTN Mobile Money"],["Service","Every Monday · 08:00–11:00"]].map(([label,value])=><div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" key={label}><p className="text-xs text-slate-400">{label}</p><p className="mt-2 font-bold">{value}</p></div>)}</div></>}
+    {tab==="Payments"&&<div className="space-y-4"><div className="flex flex-col gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 sm:flex-row sm:items-center"><div><p className="font-bold">Outstanding invoice · RWF 15,000</p><p className="mt-1 text-sm text-slate-500">INV-00125 · Due 10 October 2026</p></div><button className="rounded-xl bg-emerald-700 px-5 py-2.5 text-sm font-bold text-white sm:ml-auto" onClick={()=>onPage("Payment")}>Pay now</button></div><CustomerPaymentHistoryPage/></div>}
+    {tab==="Invoices"&&<div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="border-b border-slate-100 p-5"><p className="font-bold">My invoices</p><p className="mt-1 text-xs text-slate-500">Invoices for Jean Romeo only.</p></div><div className="overflow-x-auto"><table className="w-full min-w-[700px] text-left"><thead className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-400"><tr>{["Invoice","Period","Amount","Due date","Status","Action"].map(item=><th className="px-5 py-3" key={item}>{item}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{invoices.map(invoice=><tr className="text-sm" key={invoice[0]}>{invoice.slice(0,5).map((value,index)=><td className={`px-5 py-4 ${index===0||index===2?"font-bold":"text-slate-600"}`} key={value}>{value}</td>)}<td className="px-5 py-4"><button className="flex items-center gap-1 text-xs font-bold text-emerald-700" onClick={()=>download(invoice)}><Download size={14}/>Download</button></td></tr>)}</tbody></table></div></div>}
+  </div>;
 }
 
 function CustomerRoutePage() {
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl bg-emerald-900 p-5 text-white"><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Today’s Route</p><div className="mt-4 grid gap-4 sm:grid-cols-3 lg:grid-cols-6">{[["Route ID", "KG 45"], ["Collection zone", "Gasabo North"], ["Vehicle", "RW 412 A"], ["Driver / team", "Eric N. · Team Alpha"], ["Current progress", "14 / 18 stops"], ["Estimated arrival", "10:30"]].map(([label, value]) => <div key={label}><p className="text-xs text-emerald-200">{label}</p><p className="mt-1 text-sm font-bold">{value}</p></div>)}</div><div className="mt-5 flex items-center gap-3"><span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-emerald-900">In Progress</span><span className="text-xs text-emerald-100">Collection status · vehicle approaching your area</span></div></div>
+      <div className="rounded-2xl bg-emerald-900 p-5 text-white"><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Today’s Route</p><div className="mt-4 grid gap-4 sm:grid-cols-3 lg:grid-cols-6">{[["Route ID", "KG 45"], ["Collection zone", "Kicukiro-Nyarugunga Route"], ["Vehicle", "RW 412 A"], ["Driver / team", "Eric N. · Team Alpha"], ["Current progress", "14 / 18 stops"], ["Estimated arrival", "10:30"]].map(([label, value]) => <div key={label}><p className="text-xs text-emerald-200">{label}</p><p className="mt-1 text-sm font-bold">{value}</p></div>)}</div><div className="mt-5 flex items-center gap-3"><span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-emerald-900">In Progress</span><span className="text-xs text-emerald-100">Collection status · vehicle approaching your area</span></div></div>
       <div className="grid gap-4 xl:grid-cols-[1.5fr_0.5fr]">
         <div className="relative min-h-[520px] overflow-hidden rounded-2xl bg-[#e5efe4]">
           <div className="absolute inset-0 map-grid" /><div className="absolute left-[18%] top-[-10%] h-[130%] w-3 rotate-[24deg] rounded-full bg-white" /><div className="absolute left-[-5%] top-[42%] h-3 w-[115%] -rotate-[8deg] rounded-full bg-white" />
@@ -1009,128 +942,98 @@ function CustomerRoutePage() {
   );
 }
 
-function CustomerProfilePage() {
+function UnifiedProfileSettings({ role, profile: sessionProfile }: { role: Role; profile?: SessionProfile | null }) {
+  const [tab, setTab] = useState("Profile");
   const [editing, setEditing] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [profile, setProfile] = useState({
-    name: "Jean Romeo",
-    email: "jean.romeo@example.com",
-    phone: "+250 788 123 456",
-    address: "KG 218, Nyarugunga, Kicukiro",
-  });
-  const save = () => {
-    setEditing(false);
-    setSaved(true);
-    window.setTimeout(() => setSaved(false), 2500);
+  const [notice, setNotice] = useState("");
+  const [locationRequest, setLocationRequest] = useState(false);
+  const roleProfiles = {
+    Customer: { name: "Jean Romeo", id: "CUS-2048", role: "Customer", department: "Household service", phone: "+250 788 123 456", email: "jean.romeo@example.com", address: "KG 218, Nyarugunga, Kicukiro, Kigali", extra: "Household · Level 2" },
+    Employee: { name: "Eric Niyonzima", id: "EMP-0104", role: "Driver", department: "Team Alpha", phone: "+250 788 304 112", email: "eric.niyonzima@ecoroute.rw", address: "Kicukiro, Kigali", extra: "License category C" },
+    Finance: { name: "Claudine Uwase", id: "EMP-0021", role: "Finance Officer", department: "Finance & Billing", phone: "+250 788 420 116", email: "claudine.uwase@ecoroute.rw", address: "Kigali, Rwanda", extra: "Finance Operations" },
+    Manager: { name: "Diane Mukamana", id: "EMP-0007", role: "Manager", department: "Operations", phone: "+250 788 112 204", email: "diane.mukamana@ecoroute.rw", address: "Kigali, Rwanda", extra: "Operations Command" },
+    Admin: { name: "System Administrator", id: "ADM-0001", role: "Administrator", department: "Platform", phone: "+250 788 000 001", email: "admin@ecoroute.rw", address: "Kigali, Rwanda", extra: "System Administration" },
+  }[role];
+  const [details, setDetails] = useState({ ...roleProfiles, name: sessionProfile?.name ?? roleProfiles.name, phone: sessionProfile?.phone ?? roleProfiles.phone, email: sessionProfile?.email ?? roleProfiles.email });
+  const [original, setOriginal] = useState(details);
+  const [passwords, setPasswords] = useState({ current: "", next: "", confirm: "" });
+  const [notifications, setNotifications] = useState({ collection: true, payment: true, sms: true, service: true });
+  const [language, setLanguage] = useState("English");
+  const [compact, setCompact] = useState(false);
+  const initials = details.name.split(" ").map((part) => part[0]).join("").slice(0, 2);
+  const saveProfile = () => {
+    if (details.address !== original.address) setLocationRequest(true);
+    setOriginal(details); setEditing(false); setNotice("Profile information saved successfully.");
   };
-  return (
-    <div className="grid gap-4 xl:grid-cols-[1fr_0.65fr]">
+  const tabs = ["Profile", "Account & Security", "Notifications", "Preferences"];
+  return <div className="space-y-4">
+    <div className="flex gap-2 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">{tabs.map((item) => <button className={`whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-bold ${tab === item ? "bg-emerald-700 text-white" : "text-slate-500 hover:bg-slate-50"}`} key={item} onClick={() => setTab(item)}>{item}</button>)}</div>
+    {notice && <div className="flex items-center rounded-xl bg-emerald-50 p-4 text-sm font-semibold text-emerald-800"><Check size={17} className="mr-2" />{notice}<button className="ml-auto" onClick={() => setNotice("")}><X size={16} /></button></div>}
+    {tab === "Profile" && <div className="grid gap-4 xl:grid-cols-[1fr_0.75fr]">
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center"><div className="grid size-16 place-items-center rounded-2xl bg-emerald-100 text-xl font-bold text-emerald-800">JR</div><div><p className="text-xl font-bold">{profile.name}</p><p className="mt-1 text-sm text-slate-500">Customer ID · CUS-2048</p></div><button className="sm:ml-auto rounded-xl border border-emerald-700 px-4 py-2.5 text-sm font-bold text-emerald-800" onClick={() => editing ? save() : setEditing(true)}>{editing ? "Save changes" : "Edit personal information"}</button></div>
-        {saved && <div className="mt-5 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-800">Your personal information was updated successfully.</div>}
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {[["Full name", "name", "text"], ["Email address", "email", "email"], ["Phone number", "phone", "tel"], ["Home address", "address", "text"]].map(([label, key, type]) => <label className="text-xs font-bold text-slate-600" key={key}>{label}<input className={`mt-1.5 w-full rounded-xl border p-3 text-sm outline-none ${editing ? "border-emerald-300 bg-white focus:border-emerald-600" : "border-slate-100 bg-slate-50 text-slate-600"}`} disabled={!editing} onChange={(event) => setProfile({ ...profile, [key]: event.target.value })} type={type} value={profile[key as keyof typeof profile]} /></label>)}
-        </div>
-        {editing && <button className="mt-4 text-sm font-semibold text-slate-400" onClick={() => setEditing(false)}>Cancel editing</button>}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center"><div className="grid size-16 place-items-center rounded-2xl bg-emerald-100 text-xl font-bold text-emerald-800">{initials}</div><div><p className="text-xl font-bold">{details.name}</p><p className="mt-1 text-sm text-slate-500">{role === "Customer" ? "Customer" : "Employee"} ID · {details.id}</p></div><button className="rounded-xl border border-emerald-700 px-4 py-2.5 text-sm font-bold text-emerald-800 sm:ml-auto" onClick={() => editing ? saveProfile() : setEditing(true)}>{editing ? "Save" : "Edit personal information"}</button></div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">{[["Full name","name","text"],["Email","email","email"],["Phone","phone","tel"],["Home address","address","text"]].map(([label,key,type]) => <label className="text-xs font-bold text-slate-600" key={key}>{label}<input className={`mt-1.5 w-full rounded-xl border p-3 text-sm ${editing ? "border-emerald-300" : "border-slate-100 bg-slate-50 text-slate-600"}`} disabled={!editing} onChange={(event) => setDetails({ ...details, [key]: event.target.value })} type={type} value={details[key as keyof typeof details]} /></label>)}</div>
+        {role === "Customer" && editing && <label className="mt-4 block text-xs font-bold text-slate-600">Requested collection zone<select className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" onChange={() => setLocationRequest(true)}><option>Nyarugunga, Kicukiro</option><option>Gasaraba, Kicukiro</option><option>Kicukiro Central</option><option>Another configured zone</option></select></label>}
+        {editing && <button className="mt-4 text-sm font-semibold text-slate-400" onClick={() => { setDetails(original); setEditing(false); }}>Cancel</button>}
+        {locationRequest && <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm font-semibold text-amber-900">Location change request sent to Operations · Pending</div>}
+        <button className="mt-5 text-sm font-bold text-emerald-700" onClick={() => setTab("Account & Security")}>Manage password and account security</button>
       </div>
-      <div className="space-y-4">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="font-bold">Waste-service information</p><div className="mt-4 space-y-3">{[["Account status", "Active"], ["Collection point", "CP-2048"], ["Service type", "Household · Level 2"], ["Collection frequency", "Every Monday"], ["Assigned route", "Gasabo North · KG 218"], ["Waste allowance", "Up to 240 kg"]].map(([label, value]) => <div className="flex border-b border-slate-100 pb-3 text-sm last:border-0" key={label}><span className="text-slate-500">{label}</span><strong className="ml-auto text-right">{value}</strong></div>)}</div></div>
-        <div className="rounded-2xl bg-emerald-900 p-5 text-white"><ShieldCheck size={20} /><p className="mt-4 font-bold">Account security</p><p className="mt-2 text-sm leading-6 text-emerald-100">Your contact details are visible only to authorized operations staff assigned to your service.</p><button className="mt-4 rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-emerald-900">Change password</button></div>
-      </div>
-    </div>
-  );
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div className="flex items-center"><p className="font-bold">{role === "Customer" ? "Waste-service information" : "Work information"}</p>{role === "Customer" && <span className="ml-auto rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">Active</span>}</div><div className="mt-4 space-y-3">{(role === "Customer" ? [["Collection point","CP-2048"],["Service type","Household · Level 2"],["Frequency","Every Monday"],["Assigned route","Kicukiro-Nyarugunga Route"],["Waste allowance","Up to 240 kg"],["Collection location","Nyarugunga, Kicukiro"]] : role === "Employee" ? [["Role","Driver"],["Team","Team Alpha"],["Vehicle","RW 412 A"],["License","Category C"],["Department","Collection Operations"]] : [["Role",details.role],["Department",details.department],["Employee ID",details.id],["Workspace",details.extra]]).map(([label,value]) => <div className="flex border-b border-slate-100 pb-3 text-sm last:border-0" key={label}><span className="text-slate-500">{label}</span><strong className="ml-auto text-right">{value}</strong></div>)}</div></div>
+    </div>}
+    {tab === "Account & Security" && <div className="grid gap-4 lg:grid-cols-2"><div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="font-bold">Account information</p><div className="mt-4 space-y-4"><label className="block text-xs font-bold">Phone<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" value={details.phone} onChange={(e) => setDetails({...details, phone:e.target.value})} /></label><label className="block text-xs font-bold">Email<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" value={details.email} onChange={(e) => setDetails({...details, email:e.target.value})} /></label><button className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white" onClick={() => setNotice("Account information saved. SMS notifications will use the updated phone number.")}>Save account information</button></div><div className="mt-6 border-t border-slate-100 pt-5"><p className="font-bold">Change password</p><div className="mt-4 space-y-3">{[["Current password","current"],["New password","next"],["Confirm new password","confirm"]].map(([label,key]) => <label className="block text-xs font-bold" key={key}>{label}<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" type="password" value={passwords[key as keyof typeof passwords]} onChange={(e) => setPasswords({...passwords,[key]:e.target.value})} /></label>)}</div><button className="mt-4 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white" onClick={() => setNotice(passwords.next && passwords.next === passwords.confirm ? "Password changed successfully." : "Enter matching new passwords.")}>Change password</button></div></div><div className="rounded-2xl bg-emerald-900 p-5 text-white"><ShieldCheck size={20}/><p className="mt-4 font-bold">Security & login sessions</p><div className="mt-5 space-y-3 text-sm"><div className="flex"><span className="text-emerald-100">Current session</span><strong className="ml-auto">Kigali · Active</strong></div><div className="flex"><span className="text-emerald-100">Last login</span><strong className="ml-auto">Today · 08:42</strong></div></div><button className="mt-6 w-full rounded-xl bg-white/10 py-3 text-xs font-bold" onClick={() => setNotice("Other devices signed out successfully.")}>Sign out other devices</button></div></div>}
+    {tab === "Notifications" && <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="font-bold">Notification settings</p><p className="mt-1 text-sm text-slate-500">SMS messages will be sent to {details.phone}.</p><div className="mt-5 divide-y divide-slate-100">{[["collection","Collection reminders"],["payment","Payment notifications"],["sms","SMS"],["service","Service updates"]].map(([key,label]) => <label className="flex items-center py-4 text-sm font-semibold" key={key}>{label}<input className="ml-auto size-5 accent-emerald-700" type="checkbox" checked={notifications[key as keyof typeof notifications]} onChange={() => setNotifications({...notifications,[key]:!notifications[key as keyof typeof notifications]})}/></label>)}</div><button className="mt-4 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white" onClick={() => setNotice("Notification settings saved.")}>Save notification settings</button></div>}
+    {tab === "Preferences" && <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="font-bold">Display preferences</p><div className="mt-5 grid gap-4 sm:grid-cols-2"><label className="text-xs font-bold">Language<select className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" value={language} onChange={(e) => setLanguage(e.target.value)}><option>English</option><option>Kinyarwanda</option><option>French</option></select></label><label className="flex items-center rounded-xl border border-slate-200 p-4 text-sm font-semibold">Compact page view<input className="ml-auto size-5 accent-emerald-700" type="checkbox" checked={compact} onChange={() => setCompact(!compact)}/></label></div><button className="mt-5 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white" onClick={() => setNotice("Preferences saved.")}>Save preferences</button></div>}
+  </div>;
 }
 
-function CustomerSettingsPage() {
-  const [saved, setSaved] = useState("");
-  const [contact, setContact] = useState({ phone: "+250 788 123 456", email: "jean.romeo@example.com" });
-  const [preferences, setPreferences] = useState({
-    collectionReminders: true,
-    paymentNotifications: true,
-    sms: true,
-    serviceUpdates: true,
-    compactView: false,
-  });
-  const [language, setLanguage] = useState("English");
-  const [passwords, setPasswords] = useState({ current: "", next: "", confirm: "" });
-  const saveContact = () => {
-    setSaved("Account contact information updated successfully.");
-    window.setTimeout(() => setSaved(""), 2500);
-  };
-  const changePassword = () => {
-    if (!passwords.current || passwords.next.length < 8 || passwords.next !== passwords.confirm) {
-      setSaved("Password was not changed. Use at least 8 characters and make sure the new passwords match.");
-      return;
-    }
-    setSaved("Password changed successfully. Other sessions were signed out.");
-    setPasswords({ current: "", next: "", confirm: "" });
-  };
-  const toggle = (key: keyof typeof preferences) => setPreferences({ ...preferences, [key]: !preferences[key] });
-  return (
-    <div className="space-y-4">
-      {saved && <div className={`rounded-xl p-4 text-sm font-semibold ${saved.includes("success") ? "bg-emerald-50 text-emerald-800" : "bg-slate-950 text-white"}`}>{saved}</div>}
-      <div className="grid gap-4 xl:grid-cols-2">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-3"><div className="grid size-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><UserRound size={18} /></div><div><p className="font-bold">Account</p><p className="text-xs text-slate-500">Update your phone number and email address.</p></div></div>
-          <div className="mt-6 space-y-4"><label className="block text-xs font-bold text-slate-600">Phone number<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm outline-none focus:border-emerald-500" onChange={(event) => setContact({ ...contact, phone: event.target.value })} type="tel" value={contact.phone} /></label><label className="block text-xs font-bold text-slate-600">Email address<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm outline-none focus:border-emerald-500" onChange={(event) => setContact({ ...contact, email: event.target.value })} type="email" value={contact.email} /></label></div>
-          <button className="mt-5 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white" onClick={saveContact}>Save account information</button>
-        </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-3"><div className="grid size-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><KeyRound size={18} /></div><div><p className="font-bold">Change password</p><p className="text-xs text-slate-500">Choose a secure password for your customer account.</p></div></div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2"><label className="block text-xs font-bold text-slate-600 sm:col-span-2">Current password<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" onChange={(event) => setPasswords({ ...passwords, current: event.target.value })} type="password" value={passwords.current} /></label><label className="block text-xs font-bold text-slate-600">New password<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" onChange={(event) => setPasswords({ ...passwords, next: event.target.value })} type="password" value={passwords.next} /></label><label className="block text-xs font-bold text-slate-600">Confirm password<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" onChange={(event) => setPasswords({ ...passwords, confirm: event.target.value })} type="password" value={passwords.confirm} /></label></div>
-          <button className="mt-5 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white" onClick={changePassword}>Change password</button>
-        </div>
-      </div>
-      <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-3"><div className="grid size-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><Bell size={18} /></div><div><p className="font-bold">Notifications</p><p className="text-xs text-slate-500">Choose the service information you want to receive.</p></div></div>
-          <div className="mt-5 divide-y divide-slate-100">
-            {[
-              ["collectionReminders", "Collection reminders", "Upcoming pickup dates, time windows and route changes"],
-              ["paymentNotifications", "Payment notifications", "Bills, successful payments, failures and due-date reminders"],
-              ["sms", "SMS", "Send important service messages to your registered phone"],
-              ["serviceUpdates", "Service updates", "Collection completion, delays and service-request progress"],
-            ].map(([key, label, detail]) => <div className="flex items-center gap-4 py-4" key={key}><div><p className="text-sm font-bold">{label}</p><p className="mt-1 text-xs text-slate-500">{detail}</p></div><button aria-label={`Toggle ${label}`} className={`ml-auto flex h-7 w-12 shrink-0 items-center rounded-full p-1 transition ${preferences[key as keyof typeof preferences] ? "justify-end bg-emerald-700" : "justify-start bg-slate-200"}`} onClick={() => toggle(key as keyof typeof preferences)}><span className="size-5 rounded-full bg-white shadow" /></button></div>)}
-          </div>
-        </div>
-        <div className="space-y-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div className="flex items-center gap-3"><Settings className="text-emerald-700" size={19} /><p className="font-bold">Preferences</p></div><label className="mt-5 block text-xs font-bold text-slate-600">Language<select className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" onChange={(event) => setLanguage(event.target.value)} value={language}><option>English</option><option>Kinyarwanda</option><option>French</option></select></label><div className="mt-4 flex items-center gap-3 rounded-xl bg-slate-50 p-4"><div><p className="text-sm font-bold">Compact page view</p><p className="text-xs text-slate-500">Display more information on each page.</p></div><button aria-label="Toggle compact view" className={`ml-auto flex h-7 w-12 items-center rounded-full p-1 ${preferences.compactView ? "justify-end bg-emerald-700" : "justify-start bg-slate-200"}`} onClick={() => toggle("compactView")}><span className="size-5 rounded-full bg-white shadow" /></button></div><button className="mt-4 w-full rounded-xl border border-emerald-700 py-3 text-sm font-bold text-emerald-800" onClick={() => setSaved("Preferences saved successfully.")}>Save preferences</button></div>
-          <div className="rounded-2xl bg-emerald-900 p-5 text-white"><div className="flex items-center gap-2"><ShieldCheck size={19} /><p className="font-bold">Security & login sessions</p></div><div className="mt-5 space-y-3 text-sm"><div className="flex"><span className="text-emerald-100">Current session</span><strong className="ml-auto">Kigali · Active</strong></div><div className="flex"><span className="text-emerald-100">Last login</span><strong className="ml-auto">Today · 08:42</strong></div><div className="flex"><span className="text-emerald-100">Device</span><strong className="ml-auto">Web browser</strong></div><div className="flex"><span className="text-emerald-100">Password status</span><strong className="ml-auto">Secure</strong></div></div><button className="mt-5 w-full rounded-xl bg-white/10 py-3 text-xs font-bold" onClick={() => setSaved("Other login sessions were signed out successfully.")}>Sign out other sessions</button></div>
-        </div>
-      </div>
-    </div>
-  );
+function CustomerRouteMap({ compact = false }: { compact?: boolean }) {
+  return <div className={`relative overflow-hidden rounded-2xl bg-[#e5efe4] ${compact ? "min-h-64" : "min-h-[420px]"}`}><div className="absolute inset-0 map-grid"/><div className="absolute left-[18%] top-[-10%] h-[130%] w-3 rotate-[24deg] rounded-full bg-white"/><div className="absolute left-[-5%] top-[42%] h-3 w-[115%] -rotate-[8deg] rounded-full bg-white"/><svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 700 420"><path d="M45 350 C155 320 120 115 275 175 S430 330 650 60" fill="none" stroke="#047857" strokeWidth="5"/></svg><span className="absolute left-[16%] top-[68%] grid size-10 place-items-center rounded-full border-4 border-white bg-emerald-700 text-white shadow"><Truck size={17}/></span><span className="absolute right-[8%] top-[12%] grid size-11 place-items-center rounded-full border-4 border-white bg-emerald-700 text-white shadow"><MapPin size={18}/></span><div className="absolute bottom-4 left-4 right-4 rounded-xl bg-white p-4 shadow-lg"><p className="text-xs font-bold text-emerald-800">Kicukiro-Nyarugunga Route</p><p className="mt-1 text-sm font-bold">Team Alpha · RW 412 A · Eric Niyonzima</p><p className="text-xs text-slate-500">Collection point CP-2048 · Stop 18 of 18</p></div></div>;
 }
 
 function CustomerMyCollectionPage({ onPage }: { onPage: (page: string) => void }) {
-  return (
-    <div className="space-y-4">
-      <div className="rounded-2xl bg-emerald-900 p-5 text-white">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start"><div><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Current Collection</p><p className="mt-2 text-2xl font-bold">Collection #COL-1025</p><p className="mt-1 text-sm text-emerald-100">Your next assigned household waste collection</p></div><span className="self-start rounded-full bg-white px-3 py-1.5 text-xs font-bold text-emerald-900 sm:ml-auto">Scheduled</span></div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["Date", "05 Oct 2026"], ["Time", "08:00–10:00"], ["Collection point", "KG 218, Gasabo"], ["Route", "Gasabo North"], ["Vehicle", "RW 412 A"], ["Collection team", "Team Alpha"], ["Status", "Scheduled"], ["Estimated waste", "Up to 240 kg"]].map(([label, value]) => <div key={label}><p className="text-xs text-emerald-200">{label}</p><p className="mt-1 text-sm font-bold">{value}</p></div>)}</div>
-      </div>
-      <div className="grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="border-b border-slate-100 p-5"><p className="font-bold">My collection timetable</p><p className="mt-1 text-xs text-slate-500">Scheduled pickups and completed collection history.</p></div><div className="overflow-x-auto"><table className="w-full min-w-[680px] text-left"><thead className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-400"><tr><th className="px-5 py-3">Collection</th><th className="px-5 py-3">Date & time</th><th className="px-5 py-3">Route / vehicle</th><th className="px-5 py-3">Status</th></tr></thead><tbody className="divide-y divide-slate-100">{[["COL-1025", "05 Oct · 08:00–10:00", "Gasabo North · RW 412 A", "Scheduled"], ["COL-1018", "28 Sep · 08:42", "Gasabo North · RW 412 A", "Completed"], ["COL-1011", "21 Sep · 09:06", "Gasabo North · RW 307 K", "Completed"], ["COL-1004", "14 Sep · 08:51", "Gasabo North · RW 412 A", "Completed"]].map((row) => <tr className="text-sm" key={row[0]}><td className="px-5 py-4 font-bold">{row[0]}</td><td className="px-5 py-4 text-slate-600">{row[1]}</td><td className="px-5 py-4 text-slate-600">{row[2]}</td><td className="px-5 py-4"><span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800">{row[3]}</span></td></tr>)}</tbody></table></div></div>
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5"><p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Household service · Level 2</p><p className="mt-3 text-sm text-slate-500">Monthly waste collection fee</p><p className="mt-1 text-3xl font-bold text-slate-950">RWF 15,000</p><div className="mt-5 space-y-3 text-sm"><div className="flex"><span className="text-slate-500">Waste allowance</span><strong className="ml-auto">Up to 240 kg</strong></div><div className="flex"><span className="text-slate-500">Frequency</span><strong className="ml-auto">Weekly</strong></div><div className="flex"><span className="text-slate-500">Current invoice</span><strong className="ml-auto">Outstanding</strong></div><div className="flex"><span className="text-slate-500">Due</span><strong className="ml-auto">10 Oct 2026</strong></div></div><button className="mt-6 w-full rounded-xl bg-emerald-700 py-3 text-sm font-bold text-white" onClick={() => onPage("Payment")}>Pay RWF 15,000</button><button className="mt-2 w-full rounded-xl border border-emerald-300 py-3 text-sm font-bold text-emerald-800" onClick={() => onPage("Route")}>View collection route</button></div>
-      </div>
-    </div>
-  );
+  const [tab, setTab] = useState(() => localStorage.getItem("ecoroute-collection-tab") ?? "Overview");
+  useEffect(() => localStorage.removeItem("ecoroute-collection-tab"), []);
+  const [status, setStatus] = useState(() => localStorage.getItem("ecoroute-customer-collection-status") ?? "Scheduled");
+  useEffect(() => { const sync = () => setStatus(localStorage.getItem("ecoroute-customer-collection-status") ?? "Scheduled"); window.addEventListener("ecoroute-status", sync); return () => window.removeEventListener("ecoroute-status", sync); }, []);
+  return <div className="space-y-4"><div className="flex gap-2 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">{["Overview","Route & Map","Location"].map((item) => <button className={`whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-bold ${tab === item ? "bg-emerald-700 text-white" : "text-slate-500 hover:bg-slate-50"}`} key={item} onClick={() => setTab(item)}>{item}</button>)}</div>
+    {tab === "Overview" && <><div className="rounded-2xl bg-emerald-900 p-5 text-white"><div className="flex flex-col gap-4 sm:flex-row sm:items-start"><div><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Current collection</p><p className="mt-2 text-2xl font-bold">Monday, 05 October 2026</p><p className="mt-1 text-sm text-emerald-100">08:00–11:00 · KG 218, Nyarugunga, Kicukiro</p></div><span className="self-start rounded-full bg-white px-3 py-1.5 text-xs font-bold text-emerald-900 sm:ml-auto">{status}</span></div><div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["Collection point","CP-2048"],["Route","Kicukiro-Nyarugunga Route"],["Vehicle","RW 412 A"],["Collection team","Team Alpha"],["Driver","Eric Niyonzima"],["Frequency","Every Monday"],["Service","Household · Level 2"],["Waste allowance","Up to 240 kg"]].map(([label,value]) => <div key={label}><p className="text-xs text-emerald-200">{label}</p><p className="mt-1 text-sm font-bold">{value}</p></div>)}</div></div><div className="grid gap-4 lg:grid-cols-2"><div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="font-bold">Collection status</p><div className="mt-5 grid grid-cols-3 gap-2">{["Scheduled","On the way","Collected"].map((item,index) => { const current=["Scheduled","On the way","Collected"].indexOf(status); return <div key={item}><div className={`h-2 rounded-full ${index <= current ? "bg-emerald-700" : "bg-slate-100"}`}/><p className="mt-2 text-xs font-semibold text-slate-600">{item}</p></div>; })}</div><p className="mt-5 text-sm text-slate-500">Driver updates from Eric Niyonzima appear here immediately.</p></div><div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5"><p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Next collection</p><p className="mt-2 text-xl font-bold">Monday, 05 October</p><p className="mt-1 text-sm text-slate-600">08:00–11:00 · Nyarugunga</p><button className="mt-4 text-sm font-bold text-emerald-800" onClick={() => onPage("My Schedule / History")}>Open schedule and history</button></div></div></>}
+    {tab === "Route & Map" && <div className="space-y-4"><CustomerRouteMap/><div className="grid gap-3 sm:grid-cols-4">{[["Team","Team Alpha"],["Vehicle","RW 412 A"],["Driver","Eric Niyonzima"],["Stop progress","18 stops · CP-2048"]].map(([label,value]) => <div className="rounded-2xl border border-slate-200 bg-white p-4" key={label}><p className="text-xs text-slate-400">{label}</p><p className="mt-1 font-bold">{value}</p></div>)}</div></div>}
+    {tab === "Location" && <div className="grid gap-4 lg:grid-cols-[1fr_0.7fr]"><CustomerRouteMap compact/><div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="font-bold">My collection location</p><div className="mt-5 space-y-3 text-sm">{[["Address","KG 218, Nyarugunga, Kicukiro, Kigali"],["Collection point","CP-2048"],["Configured zone","Nyarugunga, Kicukiro"],["Pickup window","Every Monday · 08:00–11:00"]].map(([label,value]) => <div className="border-b border-slate-100 pb-3" key={label}><p className="text-xs text-slate-400">{label}</p><p className="mt-1 font-bold">{value}</p></div>)}</div><a className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white" href="https://www.google.com/maps/search/?api=1&query=KG%20218%2C%20Nyarugunga%2C%20Kicukiro%2C%20Kigali" target="_blank" rel="noreferrer"><MapPin size={16}/>View on Google Maps</a></div></div>}
+  </div>;
 }
 
+type ScheduleEntry = { day: number; month: "September" | "October"; status: "Scheduled" | "Completed" | "Missed"; time: string; reason?: string; collected?: string };
+const customerSchedule: ScheduleEntry[] = [
+  { day: 5, month: "October", status: "Scheduled", time: "08:00–11:00" }, { day: 12, month: "October", status: "Scheduled", time: "08:00–11:00" }, { day: 19, month: "October", status: "Scheduled", time: "08:00–11:00" }, { day: 26, month: "October", status: "Scheduled", time: "08:00–11:00" },
+  { day: 28, month: "September", status: "Completed", time: "08:00–11:00", collected: "08:42" }, { day: 21, month: "September", status: "Completed", time: "08:00–11:00", collected: "09:06" }, { day: 14, month: "September", status: "Missed", time: "08:00–11:00", reason: "Vehicle breakdown", collected: "Rescheduled and completed 15 Sep" },
+];
+
 function CustomerSchedulePage({ onPage }: { onPage: (page: string) => void }) {
-  const [reminder, setReminder] = useState(false);
-  const collectionDays = [5, 12, 19, 26];
-  const monthStartOffset = 4;
-  return (
-    <div className="space-y-4">
-      <div className="rounded-2xl bg-emerald-900 p-5 text-white"><div className="flex flex-col gap-4 sm:flex-row sm:items-center"><div><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Upcoming collection</p><p className="mt-2 text-2xl font-bold">Monday, 05 October</p><p className="mt-1 text-sm text-emerald-100">08:00–10:00 · KG 218, Gasabo</p></div><div className="flex flex-wrap gap-2 sm:ml-auto"><button className="rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-emerald-900" onClick={() => onPage("My Collection")}>View collection</button><button className="rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold" onClick={() => onPage("Route")}>View route</button><a className="rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold" href="https://www.google.com/maps/search/?api=1&query=KG%20218%2C%20Gasabo%2C%20Kigali" rel="noreferrer" target="_blank"><MapPin className="mr-1.5 inline" size={14} />Google Maps</a><button className={`rounded-xl px-4 py-2.5 text-xs font-bold ${reminder ? "bg-emerald-500 text-emerald-950" : "bg-white/10"}`} onClick={() => setReminder(true)}>{reminder ? "Reminder set" : "Set reminder"}</button></div></div></div>
-      {reminder && <div className="rounded-xl bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">A collection reminder will be sent by app notification and SMS before the 05 October pickup.</div>}
-      <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div className="flex items-center"><div><p className="font-bold">October 2026</p><p className="text-xs text-slate-500">Weekly household collection calendar</p></div><CalendarDays className="ml-auto text-emerald-700" size={20} /></div><div className="mt-6 grid grid-cols-7 gap-2 text-center">{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => <div className="pb-2 text-[10px] font-bold uppercase text-slate-400" key={day}>{day}</div>)}{Array.from({ length: monthStartOffset }).map((_, index) => <div key={`empty-${index}`} />)}{Array.from({ length: 31 }).map((_, index) => { const day = index + 1; const scheduled = collectionDays.includes(day); return <div className={`relative grid aspect-square place-items-center rounded-xl text-sm ${scheduled ? "bg-emerald-700 font-bold text-white shadow-sm" : "bg-slate-50 text-slate-600"}`} key={day}>{day}{scheduled && <span className="absolute bottom-1 size-1 rounded-full bg-white" />}</div>; })}</div></div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="font-bold">Scheduled collections</p><div className="mt-4 space-y-3">{[["05 Oct", "08:00–10:00", "Scheduled"], ["12 Oct", "08:00–10:00", "Scheduled"], ["19 Oct", "08:00–10:00", "Scheduled"], ["26 Oct", "08:00–10:00", "Scheduled"]].map(([date, time, status], index) => <div className="flex items-center rounded-xl border border-slate-100 p-4" key={date}><div className="grid size-10 place-items-center rounded-xl bg-emerald-50 text-xs font-bold text-emerald-800">{index + 1}</div><div className="ml-3"><p className="text-sm font-bold">{date} · {time}</p><p className="text-xs text-slate-500">KG 218, Gasabo</p></div><span className="ml-auto text-xs font-bold text-emerald-700">{status}</span></div>)}</div></div>
-      </div>
-    </div>
-  );
+  const [view, setView] = useState("Month");
+  const [month, setMonth] = useState<"September" | "October">("October");
+  const [selected, setSelected] = useState<ScheduleEntry | { day: number; month: "September" | "October" }>({ day: 5, month: "October", status: "Scheduled", time: "08:00–11:00" });
+  const [listTab, setListTab] = useState("Upcoming");
+  const [reminderOpen, setReminderOpen] = useState(false);
+  const [reminder, setReminder] = useState<{ time: string; app: boolean; sms: boolean } | null>(null);
+  const [draftReminder, setDraftReminder] = useState({ time: "1 hour before", app: true, sms: true });
+  const [status, setStatus] = useState(() => localStorage.getItem("ecoroute-customer-collection-status") ?? "Scheduled");
+  useEffect(() => { const sync=()=>setStatus(localStorage.getItem("ecoroute-customer-collection-status") ?? "Scheduled"); window.addEventListener("ecoroute-status",sync); return()=>window.removeEventListener("ecoroute-status",sync); },[]);
+  const daysInMonth = month === "October" ? 31 : 30;
+  const leading = month === "October" ? 3 : 1;
+  const entries = customerSchedule.filter((item) => item.month === month);
+  const openRequest = (type: string) => { localStorage.setItem("ecoroute-request-prefill", JSON.stringify({ type, date: `${(selected as ScheduleEntry).day ?? 5} ${month} 2026`, reason: type === "Missed collection" ? "Collection was not completed as scheduled" : "Please request a new collection time" })); onPage("Request Service"); };
+  const downloadHistory = () => { const text="Date,Status,Collected time,Reason\n28 Sep 2026,Completed,08:42,\n21 Sep 2026,Completed,09:06,\n14 Sep 2026,Missed,,Vehicle breakdown; rescheduled and completed 15 Sep"; const url=URL.createObjectURL(new Blob([text],{type:"text/csv"})); const link=document.createElement("a"); link.href=url; link.download="Jean-Romeo-collection-history.csv"; link.click(); URL.revokeObjectURL(url); };
+  return <div className="space-y-4">
+    <div className="rounded-2xl bg-emerald-900 p-5 text-white"><div className="flex flex-col gap-4 sm:flex-row sm:items-start"><div><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Upcoming collection</p><p className="mt-2 text-2xl font-bold">Monday, 05 October</p><p className="mt-1 text-sm text-emerald-100">08:00–11:00 · KG 218, Nyarugunga, Kicukiro</p></div><span className="self-start rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-emerald-950 sm:ml-auto">Today</span></div><div className="mt-5 grid grid-cols-3 gap-2">{["Scheduled","On the way","Collected"].map((item,index)=>{const current=["Scheduled","On the way","Collected"].indexOf(status);return <div key={item}><div className={`h-2 rounded-full ${index<=current?"bg-white":"bg-white/20"}`}/><p className="mt-2 text-xs text-emerald-100">{item}</p></div>})}</div><div className="relative mt-6 flex flex-wrap gap-2"><button className="rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-emerald-900" onClick={()=>onPage("My Collection")}>View collection</button><button className="rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold" onClick={()=>{onPage("My Collection"); localStorage.setItem("ecoroute-collection-tab","Route & Map")}}>View route</button><a className="rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold" href="https://www.google.com/maps/search/?api=1&query=KG%20218%2C%20Nyarugunga%2C%20Kicukiro%2C%20Kigali" rel="noreferrer" target="_blank"><MapPin className="mr-1.5 inline" size={14}/>Google Maps</a><button className={`rounded-xl px-4 py-2.5 text-xs font-bold ${reminder?"bg-emerald-500 text-emerald-950":"bg-white/10"}`} onClick={()=>setReminderOpen(!reminderOpen)}>{reminder?<><Check className="mr-1 inline" size={14}/>Reminder set</>:"Set reminder"}</button>{reminderOpen && <div className="absolute left-0 top-12 z-10 w-full max-w-sm rounded-2xl bg-white p-4 text-slate-900 shadow-xl ring-1 ring-slate-200"><p className="font-bold">Collection reminder</p><div className="mt-3 space-y-2">{["1 hour before","Evening before (18:00)","Morning of (06:30)"].map((time)=><label className="flex items-center text-sm" key={time}><input className="mr-2 accent-emerald-700" type="radio" checked={draftReminder.time===time} onChange={()=>setDraftReminder({...draftReminder,time})}/>{time}</label>)}</div><div className="mt-4 border-t border-slate-100 pt-3"><label className="flex items-center text-sm">App notification<input className="ml-auto accent-emerald-700" type="checkbox" checked={draftReminder.app} onChange={()=>setDraftReminder({...draftReminder,app:!draftReminder.app})}/></label><label className="mt-2 flex items-center text-sm">SMS to +250 788 123 456<input className="ml-auto accent-emerald-700" type="checkbox" checked={draftReminder.sms} onChange={()=>setDraftReminder({...draftReminder,sms:!draftReminder.sms})}/></label></div><div className="mt-4 flex gap-2"><button className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-bold text-white" onClick={()=>{setReminder(draftReminder);setReminderOpen(false)}}>{reminder?"Save changes":"Save reminder"}</button>{reminder&&<button className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold" onClick={()=>{setReminder(null);setReminderOpen(false)}}>Remove reminder</button>}</div></div>}</div>{reminder&&<p className="mt-4 flex items-center text-xs text-emerald-100"><Check size={14} className="mr-2"/>A collection reminder will be sent {reminder.time} by {reminder.app&&reminder.sms?"app notification and SMS":reminder.sms?"SMS":"app notification"}.</p>}</div>
+    <div className="grid gap-4 xl:grid-cols-[1.35fr_0.65fr]"><div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div className="flex flex-col gap-3 sm:flex-row sm:items-center"><div className="flex items-center gap-2"><button aria-label="Previous month" className="grid size-9 place-items-center rounded-lg border border-slate-200" onClick={()=>setMonth("September")}><ChevronLeft size={17}/></button><button aria-label="Next month" className="grid size-9 place-items-center rounded-lg border border-slate-200" onClick={()=>setMonth("October")}><ChevronRight size={17}/></button><button className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold" onClick={()=>{setMonth("October");setSelected({day:5,month:"October",status:"Scheduled",time:"08:00–11:00"})}}>Today</button><p className="ml-2 font-bold">{month} 2026</p></div><div className="flex rounded-xl bg-slate-50 p-1 sm:ml-auto">{["Month","Week","Day"].map((item)=><button className={`rounded-lg px-3 py-2 text-xs font-bold ${view===item?"bg-white text-emerald-800 shadow":"text-slate-400"}`} key={item} onClick={()=>setView(item)}>{item}</button>)}</div></div>
+      {view==="Month"&&<><div className="mt-5 grid grid-cols-7 text-center text-[10px] font-bold uppercase tracking-wider text-slate-400">{["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=><span className="py-2" key={d}>{d}</span>)}</div><div className="grid grid-cols-7 gap-1">{Array.from({length:leading}).map((_,i)=><span className="min-h-16 rounded-lg bg-slate-50" key={`blank-${i}`}/>)}{Array.from({length:daysInMonth},(_,i)=>i+1).map(day=>{const entry=entries.find(e=>e.day===day);const today=month==="October"&&day===5;return <button className={`min-h-16 rounded-lg border p-1 text-left text-xs ${today?"ring-2 ring-emerald-700 ring-offset-1":""} ${entry?.status==="Completed"?"border-emerald-100 bg-emerald-50":entry?.status==="Missed"?"border-rose-400 bg-white text-rose-700":entry?"border-emerald-200 bg-emerald-100 text-emerald-900":"border-slate-100 hover:bg-slate-50"}`} key={day} onClick={()=>setSelected(entry??{day,month})}><span className="font-bold">{day}</span>{entry&&<span className="mt-1 block text-[9px] font-bold">{entry.status==="Completed"?"✓ Completed":entry.status}</span>}</button>})}</div></>}
+      {view==="Week"&&<div className="mt-5 grid gap-2 sm:grid-cols-7">{["Mon 5","Tue 6","Wed 7","Thu 8","Fri 9","Sat 10","Sun 11"].map((day,i)=><button className={`min-h-28 rounded-xl border p-3 text-left ${i===0?"border-emerald-300 bg-emerald-50":"border-slate-100"}`} key={day} onClick={()=>setSelected(i===0?customerSchedule[0]:{day:5+i,month:"October"})}><p className="text-xs font-bold">{day}</p>{i===0&&<div className="mt-3 rounded-lg bg-emerald-700 p-2 text-[10px] font-bold text-white">08:00–11:00<br/>Collection</div>}</button>)}</div>}
+      {view==="Day"&&<div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-5"><p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Monday, 05 October</p><p className="mt-2 text-xl font-bold">08:00–11:00 · Scheduled</p><div className="mt-4 grid gap-3 sm:grid-cols-2">{[["Location","KG 218, Nyarugunga, Kicukiro"],["Route","Kicukiro-Nyarugunga Route"],["Vehicle","RW 412 A"],["Driver","Eric Niyonzima · Team Alpha"]].map(([label,value])=><div key={label}><p className="text-xs text-slate-400">{label}</p><p className="text-sm font-bold">{value}</p></div>)}</div></div>}
+      <div className="mt-4 flex flex-wrap gap-4 border-t border-slate-100 pt-4 text-xs text-slate-500"><span><span className="mr-1 inline-block size-2 rounded-full bg-emerald-600"/>Scheduled</span><span><Check size={12} className="mr-1 inline text-emerald-600"/>Completed</span><span><span className="mr-1 inline-block size-2 rounded-full border border-rose-500"/>Missed</span><span><span className="mr-1 inline-block size-2 rounded-full ring-2 ring-emerald-700"/>Today</span></div>
+      <div className="mt-5 rounded-xl bg-slate-50 p-4">{"status" in selected?<><p className="font-bold">{selected.day} {selected.month} 2026 · {selected.status}</p><p className="mt-1 text-sm text-slate-500">{selected.time} · KG 218, Nyarugunga, Kicukiro</p>{selected.reason&&<p className="mt-2 text-sm font-semibold text-rose-700">Reason: {selected.reason}. {selected.collected}</p>}</>:<><p className="font-bold">{selected.day} {selected.month} 2026</p><p className="mt-1 text-sm text-slate-500">No collection scheduled.</p></>}</div></div>
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="flex border-b border-slate-100 p-2">{["Upcoming","History"].map(item=><button className={`flex-1 rounded-xl px-3 py-2.5 text-sm font-bold ${listTab===item?"bg-emerald-700 text-white":"text-slate-500"}`} key={item} onClick={()=>setListTab(item)}>{item}</button>)}</div><div className="space-y-2 p-4">{customerSchedule.filter(e=>listTab==="Upcoming"?e.month==="October":e.month==="September").map(entry=><button className="w-full rounded-xl border border-slate-100 p-3 text-left hover:border-emerald-300" key={`${entry.month}-${entry.day}`} onClick={()=>{setMonth(entry.month);setSelected(entry)}}><div className="flex"><p className="text-sm font-bold">{entry.day} {entry.month}</p><span className={`ml-auto rounded-full px-2 py-1 text-[10px] font-bold ${entry.status==="Missed"?"bg-rose-50 text-rose-700":"bg-emerald-50 text-emerald-800"}`}>{entry.status}</span></div><p className="mt-1 text-xs text-slate-500">{entry.status==="Completed"?`Collected at ${entry.collected}`:`${entry.time} · Nyarugunga`}</p>{entry.reason&&<p className="mt-1 text-xs font-semibold text-rose-700">{entry.reason} · {entry.collected}</p>}<p className="mt-1 text-[10px] text-slate-400">Kicukiro-Nyarugunga Route</p></button>)}{listTab==="History"&&<button className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-700 px-3 py-2.5 text-xs font-bold text-emerald-800" onClick={downloadHistory}><Download size={14}/>Download history</button>}</div></div></div>
+    <div className="grid gap-4 lg:grid-cols-[1fr_0.45fr]"><CustomerRouteMap compact/><div className="flex flex-col gap-3"><a className="flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-4 py-3 text-sm font-bold text-white" href="https://www.google.com/maps/search/?api=1&query=KG%20218%2C%20Nyarugunga%2C%20Kicukiro%2C%20Kigali" target="_blank" rel="noreferrer"><MapPin size={16}/>View on map</a><button className="rounded-xl border border-rose-200 bg-white px-4 py-3 text-sm font-bold text-rose-700" onClick={()=>openRequest("Missed collection")}>Report missed collection</button><button className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700" onClick={()=>openRequest("Request reschedule")}>Request reschedule</button></div></div>
+  </div>;
 }
 
 function CustomerAIAssistantPage() {
@@ -1142,13 +1045,13 @@ function CustomerAIAssistantPage() {
   const answer = (value: string) => {
     const query = value.toLowerCase();
     if (/^(hi|hy|hello|hey)\b/.test(query)) return "Hi Jean Romeo, how can I assist you? You can ask about your collection schedule, route, payment, invoice, collection point, messages, or request a service.";
-    if (query.includes("next collection") || query.includes("next pickup") || query.includes("when") && query.includes("collect")) return "Your next waste collection is scheduled for Friday, 04 October 2026, between 08:00 and 11:00. The collection point is CP-2048 in Nyarugunga, Kicukiro. Your assigned route is KG 45, vehicle RW 412 A, with Team Alpha.";
+    if (query.includes("next collection") || query.includes("next pickup") || query.includes("when") && query.includes("collect")) return "Your next waste collection is scheduled for Monday, 05 October 2026, between 08:00 and 11:00. The collection point is CP-2048 in Nyarugunga, Kicukiro. Your assigned route is Kicukiro-Nyarugunga Route, vehicle RW 412 A, with Team Alpha.";
     if (query.includes("how much") || query.includes("need to pay") || query.includes("bill") || query.includes("amount due")) return "Your current waste collection bill is RWF 15,000 for the September 2026 service period. Invoice INV-2026-00125 is outstanding and due on 10 October 2026. Open Payment and select Pay Now to use MTN Mobile Money or Airtel Money.";
-    if (query.includes("did you collect") || query.includes("collect my waste today") || query.includes("today") && query.includes("waste")) return "Your collection has not been completed yet. Route KG 45 is In Progress at stop 14 of 18. Your collection point is stop 18, and the estimated arrival is 10:30. The vehicle is RW 412 A with Eric N. and Team Alpha.";
-    if (query.includes("show my payment") || query.includes("payment history") || query.includes("last payment") || query.includes("receipt")) return "Your latest successful payment is transaction TXN-2026-10482 for RWF 15,000, invoice INV-2026-00125, paid by MTN Mobile Money on 04 October 2026. You can open Payment History to view or download the receipt.";
+    if (query.includes("did you collect") || query.includes("collect my waste today") || query.includes("today") && query.includes("waste")) return "Your collection has not been completed yet. Kicukiro-Nyarugunga Route is In Progress at stop 14 of 18. Your collection point is stop 18, and the estimated arrival is 10:30. The vehicle is RW 412 A with Eric N. and Team Alpha.";
+    if (query.includes("show my payment") || query.includes("payment history") || query.includes("last payment") || query.includes("receipt")) return "Your latest successful payment is transaction TXN-2026-10482 for RWF 15,000, invoice INV-2026-00125, paid by MTN Mobile Money on 04 October 2026. You can open My Payments / Invoices to view or download the receipt.";
     if (query.includes("missed") || query.includes("not collected") || query.includes("what should i do")) return "If your collection was missed, open Request Service and choose Missed collection. Confirm collection point CP-2048, describe what happened, and submit it for Manager review. You will receive a service-request reference and updates through Notifications and SMS.";
-    if (query.includes("route") || query.includes("vehicle") || query.includes("where")) return "Your active route is KG 45 in Gasabo North. Vehicle RW 412 A is at stop 14 of 18 with Eric N. and Team Alpha. Your collection point is stop 18. Current status is In Progress, with estimated arrival at 10:30. Open Route to see the simulated vehicle map.";
-    if (query.includes("location") || query.includes("collection point") || query.includes("address")) return "Your registered collection point is CP-2048 in Nyarugunga, Kicukiro. Service frequency is weekly, and the assigned route is KG 45. You can open My Location to view it or request a location change.";
+    if (query.includes("route") || query.includes("vehicle") || query.includes("where")) return "Your active route is Kicukiro-Nyarugunga Route. Vehicle RW 412 A is at stop 14 of 18 with Eric N. and Team Alpha. Your collection point is stop 18. Current status is In Progress, with estimated arrival at 10:30. Open My Collection > Route & Map to see the vehicle map.";
+    if (query.includes("location") || query.includes("collection point") || query.includes("address")) return "Your registered collection point is CP-2048 in Nyarugunga, Kicukiro. Service frequency is weekly, and the assigned route is Kicukiro-Nyarugunga Route. Open My Collection > Location to view it or request a location change.";
     if (query.includes("message") || query.includes("sms") || query.includes("notification")) return "Your SMS page contains collection reminders, payment confirmations, collection-completed notices, payment reminders, service-request updates and route-delay messages from EcoRoute, the Manager and assigned employees. You currently have one unread service update.";
     if (query.includes("service request") || query.includes("help") || query.includes("support")) return "You can request a missed collection, extra collection, collection-detail change, location change or payment help from Request Service. Submitted requests go to the Manager for review, and updates appear in Notifications and SMS.";
     if (query.includes("profile") || query.includes("account")) return "Your customer account is active. Customer: Jean Romeo. Collection point: CP-2048, Nyarugunga, Kicukiro. Service plan: weekly household collection with a 240 kg allowance. You can update contact information or security settings from Profile and Settings.";
@@ -1186,42 +1089,41 @@ function CustomerAIAssistantPage() {
       </div>
       <div className="space-y-4">
         <div><p className="px-1 text-xs font-bold uppercase tracking-wider text-slate-400">Ask about your service</p><div className="mt-3 space-y-2">{suggestions.map((item) => <button className="w-full rounded-xl border border-slate-200 bg-white p-4 text-left text-sm font-semibold text-slate-700 shadow-sm hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-50" disabled={typing} key={item} onClick={() => ask(item)}>{item}<ChevronRight className="float-right text-emerald-700" size={16} /></button>)}</div></div>
-        <div className="rounded-2xl bg-emerald-900 p-5 text-white"><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Your account snapshot</p><div className="mt-4 space-y-3 text-sm"><div className="flex"><span className="text-emerald-100">Next collection</span><strong className="ml-auto">Oct 04 · 08:00</strong></div><div className="flex"><span className="text-emerald-100">Current bill</span><strong className="ml-auto">RWF 15,000</strong></div><div className="flex"><span className="text-emerald-100">Route</span><strong className="ml-auto">KG 45 · 14/18</strong></div><div className="flex"><span className="text-emerald-100">Collection point</span><strong className="ml-auto">CP-2048</strong></div></div></div>
+        <div className="rounded-2xl bg-emerald-900 p-5 text-white"><p className="text-xs font-bold uppercase tracking-wider text-emerald-200">Your account snapshot</p><div className="mt-4 space-y-3 text-sm"><div className="flex"><span className="text-emerald-100">Next collection</span><strong className="ml-auto">Oct 05 · 08:00</strong></div><div className="flex"><span className="text-emerald-100">Current bill</span><strong className="ml-auto">RWF 15,000</strong></div><div className="flex"><span className="text-emerald-100">Route</span><strong className="ml-auto">Kicukiro-Nyarugunga · 14/18</strong></div><div className="flex"><span className="text-emerald-100">Collection point</span><strong className="ml-auto">CP-2048</strong></div></div></div>
       </div>
     </div>
   );
 }
 
 function ServiceRequestWorkflow() {
+  const prefill = JSON.parse(localStorage.getItem("ecoroute-request-prefill") ?? "null") as { type?: string; date?: string; reason?: string } | null;
+  const [tab, setTab] = useState("Request Service");
   const [sent, setSent] = useState(false);
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      {sent ? (
-        <div className="flex items-start gap-3"><div className="grid size-10 place-items-center rounded-full bg-emerald-100 text-emerald-700"><Check size={18} /></div><div><p className="font-bold text-slate-900">Request sent to Operations</p><p className="mt-1 text-sm text-slate-500">Reference SR-1048 · Status: Submitted. You will receive an update after manager review.</p></div></div>
-      ) : (
-        <>
-          <p className="font-bold text-slate-900">New service request</p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <select className="rounded-xl border border-slate-200 px-3 py-3 text-sm"><option>Missed collection</option><option>Extra collection</option><option>Change collection details</option><option>Location change</option><option>Payment issue</option></select>
-            <input className="rounded-xl border border-slate-200 px-3 py-3 text-sm" defaultValue="CP-KIC-2048 · Nyarugunga" />
-            <textarea className="min-h-24 rounded-xl border border-slate-200 p-3 text-sm sm:col-span-2" placeholder="Describe your request..." />
-          </div>
-          <button className="mt-4 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white" onClick={() => setSent(true)}>Submit for manager review</button>
-        </>
-      )}
-    </div>
-  );
+  const [type, setType] = useState(prefill?.type ?? "Missed collection");
+  const [date, setDate] = useState(prefill?.date ?? "05 October 2026");
+  const [reason, setReason] = useState(prefill?.reason ?? "");
+  const submit = () => { localStorage.removeItem("ecoroute-request-prefill"); setSent(true); };
+  return <div className="space-y-4"><div className="flex gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">{["Request Service","Help & Support"].map(item=><button className={`flex-1 rounded-xl px-4 py-2.5 text-sm font-bold ${tab===item?"bg-emerald-700 text-white":"text-slate-500"}`} key={item} onClick={()=>setTab(item)}>{item}</button>)}</div>{tab==="Request Service"?<div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">{sent?<div className="flex items-start gap-3"><div className="grid size-10 place-items-center rounded-full bg-emerald-100 text-emerald-700"><Check size={18}/></div><div><p className="font-bold">Request sent to Operations</p><p className="mt-1 text-sm text-slate-500">Reference SR-1048 · Status: Submitted. You will receive an update after Manager review.</p></div></div>:<><p className="font-bold">New service request</p><p className="mt-1 text-sm text-slate-500">Requests apply only to collection point CP-2048.</p><div className="mt-4 grid gap-3 sm:grid-cols-2"><label className="text-xs font-bold">Request type<select className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" value={type} onChange={e=>setType(e.target.value)}><option>Missed collection</option><option>Request reschedule</option><option>Extra collection</option><option>Location change</option><option>Payment issue</option></select></label><label className="text-xs font-bold">Collection date<input className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm" value={date} onChange={e=>setDate(e.target.value)}/></label><label className="text-xs font-bold sm:col-span-2">Reason<textarea className="mt-1.5 min-h-28 w-full rounded-xl border border-slate-200 p-3 text-sm" value={reason} onChange={e=>setReason(e.target.value)} placeholder="Describe your request..."/></label></div><button className="mt-4 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white" onClick={submit}>Submit for Manager review</button></>}</div>:<div className="grid gap-4 md:grid-cols-2"><div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><MessageSquareText className="text-emerald-700"/><p className="mt-4 font-bold">Customer support</p><p className="mt-2 text-sm leading-6 text-slate-500">Get help with your household service, collection point, invoices or account access.</p><button className="mt-4 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white" onClick={()=>{setTab("Request Service");setType("Extra collection")}}>Contact support</button></div><div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p className="font-bold">Service details</p><div className="mt-4 space-y-3 text-sm"><p><strong>Collection point:</strong> CP-2048</p><p><strong>Schedule:</strong> Every Monday · 08:00–11:00</p><p><strong>Location:</strong> Nyarugunga, Kicukiro</p><p><strong>Phone:</strong> +250 788 123 456</p></div></div></div>}</div>;
 }
 
 function EmployeeWorkflow({ page }: { page: string }) {
-  const isTrip = page === "Nduba Trip" || page === "Trip Management";
-  const isRoute = page === "My Route";
+  const isTrip = page === "Nduba Landfill" || page === "Trip Management";
+  const isRoute = page === "My Routes";
   const stages = isTrip
     ? ["Not started", "En route", "Arrived at Nduba", "Completed"]
     : isRoute
       ? ["Assigned", "Started", "Stops in progress", "Completed"]
       : ["Scheduled", "In progress", "Completed", "Needs review"];
   const [stage, setStage] = useState(0);
+  const advance = () => {
+    const next = Math.min(stage + 1, 3);
+    setStage(next);
+    if (!isTrip && !isRoute) {
+      const customerStatus = next === 1 ? "On the way" : next >= 2 ? "Collected" : "Scheduled";
+      localStorage.setItem("ecoroute-customer-collection-status", customerStatus);
+      window.dispatchEvent(new Event("ecoroute-status"));
+    }
+  };
   return (
     <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5">
       <div className="flex items-start justify-between gap-4">
@@ -1232,7 +1134,7 @@ function EmployeeWorkflow({ page }: { page: string }) {
         {stages.map((item, index) => <div key={item}><div className={`h-2 rounded-full ${index <= stage ? "bg-emerald-700" : "bg-white"}`} /><p className="mt-2 hidden text-[10px] text-slate-500 sm:block">{item}</p></div>)}
       </div>
       <div className="mt-5 flex flex-wrap gap-2">
-        <button className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50" disabled={stage >= 3} onClick={() => setStage(stage + 1)}>
+        <button className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50" disabled={stage >= 3} onClick={advance}>
           {isTrip
             ? (stage === 0 ? "Start trip" : stage === 1 ? "Record arrival" : "Complete trip")
             : isRoute
@@ -1268,7 +1170,7 @@ type CustomerRecord = {
 };
 
 const initialCustomers: CustomerRecord[] = [
-  { id: "CUS-2048", name: "Jean Romeo", phone: "+250 788 123 456", location: "Nyarugunga, Kicukiro", route: "KG 45", balance: "RWF 0", status: "Active" },
+  { id: "CUS-2048", name: "Jean Romeo", phone: "+250 788 123 456", location: "KG 218, Nyarugunga, Kicukiro", route: "Kicukiro-Nyarugunga Route", balance: "RWF 0", status: "Active" },
   { id: "CUS-2049", name: "Aline Uwase", phone: "+250 783 222 410", location: "Kimironko, Gasabo", route: "KG 11", balance: "RWF 18,000", status: "Payment due" },
   { id: "CUS-2050", name: "Patrick Habimana", phone: "+250 720 087 114", location: "Gikondo, Kicukiro", route: "KK 15", balance: "RWF 0", status: "Active" },
   { id: "CUS-2051", name: "Green Hills Residence", phone: "+250 788 560 014", location: "Kibagabaga, Gasabo", route: "KG 18", balance: "RWF 36,000", status: "Payment due" },
@@ -1310,7 +1212,7 @@ function CustomerDetails({ customer, onClose }: { customer: CustomerRecord; onCl
       )}
       {tab === "Collections" && (
         <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200">
-          {[["COL-8742", "Oct 04, 2026", "Scheduled", "08:00–11:00"], ["COL-8618", "Sep 27, 2026", "Completed", "09:14"], ["COL-8477", "Sep 20, 2026", "Completed", "08:51"], ["COL-8324", "Sep 13, 2026", "Missed", "Access blocked"]].map((row) => (
+          {[["COL-8742", "Oct 05, 2026", "Scheduled", "08:00–11:00"], ["COL-8618", "Sep 28, 2026", "Completed", "08:42"], ["COL-8477", "Sep 21, 2026", "Completed", "09:06"], ["COL-8324", "Sep 14, 2026", "Missed", "Vehicle breakdown · completed Sep 15"]].map((row) => (
             <div className="grid grid-cols-2 gap-2 border-b border-slate-100 p-4 text-sm last:border-0 sm:grid-cols-4" key={row[0]}><strong>{row[0]}</strong><span className="text-slate-500">{row[1]}</span><span className="font-semibold text-emerald-700">{row[2]}</span><span className="text-slate-500">{row[3]}</span></div>
           ))}
         </div>
@@ -1415,7 +1317,7 @@ const kigaliLocations: Record<string, Record<string, { cells: string[]; villages
 
 function ManagerCollectionsPage() {
   const [records, setRecords] = useState<CollectionRecord[]>([
-    { id: "COL-8742", customer: "Jean Romeo", date: "2026-10-04", window: "08:00–11:00", route: "KG 45", status: "Scheduled" },
+    { id: "COL-8742", customer: "Jean Romeo", date: "2026-10-05", window: "08:00–11:00", route: "Kicukiro-Nyarugunga Route", status: "Scheduled" },
     { id: "COL-8743", customer: "Aline Uwase", date: "2026-10-04", window: "09:00–12:00", route: "KG 11", status: "In Progress" },
     { id: "COL-8744", customer: "Green Hills Residence", date: "2026-10-04", window: "07:00–10:00", route: "KG 18", status: "Completed" },
   ]);
@@ -2009,6 +1911,7 @@ function EmployeeReportProblemPage() {
 function ModulePage({ role, page, onPage }: { role: Role; page: string; onPage: (page: string) => void }) {
   const [query, setQuery] = useState("");
   const requirements = pageRequirements[page] ?? ["Current records", "Status and ownership", "Activity history", "Available actions"];
+  if (page === "Profile & Settings") return <UnifiedProfileSettings role={role} />;
   if (role === "Finance") return <FinancePage page={page} />;
   if (role === "Manager" && page === "Customers") return <ManagerCustomersPage />;
   if (role === "Manager" && (page === "Collections" || page === "Collection Schedule")) return <ManagerCollectionsPage />;
@@ -2020,16 +1923,14 @@ function ModulePage({ role, page, onPage }: { role: Role; page: string; onPage: 
   if (role === "Manager" && page === "Payments & Billing") return <FinancePage page="Payments & Billing" />;
   if (role === "Manager" && page === "Salaries & Payroll") return <SalariesPage mode="Manager" />;
   if (role === "Manager" && page === "Nduba Landfill") return <ManagerNdubaPage />;
-  if (role === "Manager" && page === "Settings") return <ManagerSettingsPage />;
   if (role === "Manager" && page === "AI Assistant") return <ManagerAIAssistantPage />;
   if (role === "Manager" && page === "Routes & AI EcoRoute") return <ManagerRoutesPage />;
   if (role === "Customer" && page === "Notifications") return <CustomerSmsPage onPage={onPage} />;
   if (role === "Customer" && page === "My Payments / Invoices") return <CustomerBillingPage onPage={onPage} />;
   if (role === "Customer" && page === "AI Assistant") return <CustomerAIAssistantPage />;
-  if (role === "Customer" && page === "Profile") return <CustomerProfilePage />;
-  if (role === "Customer" && page === "Settings") return <CustomerSettingsPage />;
   if (role === "Customer" && page === "My Collection") return <CustomerMyCollectionPage onPage={onPage} />;
   if (role === "Customer" && page === "My Schedule / History") return <CustomerSchedulePage onPage={onPage} />;
+  if (role === "Customer" && page === "Request Service") return <ServiceRequestWorkflow />;
   if (role === "Employee" && page === "My Tasks") return <EmployeeTasksPage />;
   if (role === "Employee" && page === "Collection Points") return <EmployeeCollectionPointsPage />;
   if (role === "Employee" && page === "My Routes") return <EmployeeRoutePage />;
@@ -2163,16 +2064,18 @@ function Workspace({ role, onLogout }: { role: Role; onLogout: () => void }) {
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
                 {page === "Dashboard"
                   ? config.subtitle
-                  : `Manage ${page.toLowerCase()} from one connected workspace.`}
+                  : page === "Profile & Settings"
+                    ? "Manage your profile, account security, notifications and preferences."
+                    : `Manage ${page.toLowerCase()} from one connected workspace.`}
               </p>
             </div>
-            <div className="flex items-center gap-2 self-start rounded-full bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-100 sm:self-auto">
+            {role !== "Customer" && <div className="flex items-center gap-2 self-start rounded-full bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-100 sm:self-auto">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-600" />
               </span>
               {config.status}
-            </div>
+            </div>}
           </div>
           {role === "Employee" && <EmployeeCommonStatus profile={currentProfile} />}
           {role === "Finance" && (
@@ -2181,7 +2084,7 @@ function Workspace({ role, onLogout }: { role: Role; onLogout: () => void }) {
               <p><strong>Prototype data:</strong> No live payment provider is connected. These records demonstrate the workflow; production statuses must come from the EcoRoute backend after provider webhook verification.</p>
             </div>
           )}
-          {page === "Dashboard" ? role === "Finance" ? <FinanceDashboard onPage={setPage} profile={currentProfile} /> : <Dashboard onPage={setPage} profile={currentProfile} role={role} /> : role === "Finance" ? <FinancePage page={page} profile={currentProfile} /> : <ModulePage onPage={setPage} page={page} role={role} />}
+          {page === "Dashboard" ? role === "Finance" ? <FinanceDashboard onPage={setPage} profile={currentProfile} /> : <Dashboard onPage={setPage} profile={currentProfile} role={role} /> : page === "Profile & Settings" ? <UnifiedProfileSettings profile={currentProfile} role={role} /> : role === "Finance" ? <FinancePage page={page} profile={currentProfile} /> : <ModulePage onPage={setPage} page={page} role={role} />}
           <footer className="mt-8 flex flex-col gap-3 border-t border-slate-200 py-5 text-xs text-slate-400 sm:flex-row sm:items-center">
             <p>EcoRoute prototype · Kigali, Rwanda</p>
             <a
